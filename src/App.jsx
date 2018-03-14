@@ -3,9 +3,9 @@ import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import 'App.css';
+import './App.css';
 
-import Incidents from 'components/incidents/incidents';
+import Incidents from './components/incidents/incidents';
 
 export default class App extends React.Component {
     constructor () {

@@ -1,14 +1,14 @@
 import React from 'react';
 import _flattenDeep from 'lodash/flattenDeep';
 
-import Confirmation from 'components/utils/confirmation/confirmation';
+import Confirmation from './components/utils/confirmation/confirmation';
 import { createConfirmation } from 'react-confirm';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import DateFormat from 'components/utils/date-format/date-format';
+import DateFormat from './components/utils/date-format/date-format';
 
-import CreateIndicent from 'components/incidents/create-indicent/create-indicent';
+import CreateIndicent from './components/incidents/create-indicent/create-indicent';
 
 import API from 'data/api';
 
@@ -51,6 +51,10 @@ export default class Indicents extends React.Component {
             sortBy:'',
             sortOrder:''
         };
+    }
+
+    sum(a,b){
+        return a + b;
     }
 
     componentWillMount () {
