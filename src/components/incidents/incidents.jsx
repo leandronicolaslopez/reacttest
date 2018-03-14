@@ -12,11 +12,37 @@ import CreateIndicent from 'components/incidents/create-indicent/create-indicent
 
 import API from 'data/api';
 
+class IncidentItem extends React.Component {
+
+    render(){
+        return(
+        <div className="panel-container flex-row">
+            <div className="panel flex-row">
+                <div className="col date">
+                    <DateFormat date={this.props.incident.date} timezone="UTC" format="MMM DD, YY" />
+                </div>
+                <div className="col subsidiary">{ this.props.incident.subsidiary.name }</div>
+                <div className="col description">{ this.props.incident.description }</div>
+                <div className="col actions flex-row flex-end">
+                <div className="btn-icon" onClick={this.props.onEdit}>
+                    <img src="images/edit-icon.png" alt="edit icon" />
+                </div>
+                <div className="btn-icon" onClick={this.props.onDelete}>
+                    <img src="images/delete-icon.png" alt="delete icon" />
+                </div>
+            </div>
+            </div>
+        </div>
+        );
+    }
+}
+
 export default class Indicents extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = {
+            isLoading: false,
             selected: null,
             incidents: [],
             searchText: '',
@@ -59,8 +85,9 @@ export default class Indicents extends React.Component {
     }
 
     getIncidents () {
+        this.setState({ isLoading:true });
         return API.getIncidents().then((incidents) => {
-            this.setState({ incidents });
+            this.setState({ incidents:incidents, isLoading:false });
         });
     }
 
@@ -127,25 +154,15 @@ export default class Indicents extends React.Component {
                                 </div>
                             </div>
 
-                            { incidents.map((incident, i) =>
-                                <div className="panel-container flex-row" key={i}>
-                                    <div className="panel flex-row">
-                                        <div className="col date">
-                                            <DateFormat date={incident.date} timezone="UTC" format="MMM DD, YY" />
-                                        </div>
-                                        <div className="col subsidiary">{ incident.subsidiary.name }</div>
-                                        <div className="col description">{ incident.description }</div>
-                                        <div className="col actions flex-row flex-end">
-                                        <div className="btn-icon" onClick={this.editIncident.bind(this, incident)}>
-                                            <img src="images/edit-icon.png" alt="edit icon" />
-                                        </div>
-                                        <div className="btn-icon" onClick={this.deleteIncident.bind(this, incident)}>
-                                            <img src="images/delete-icon.png" alt="delete icon" />
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
+                            
+                            {this.state.isLoading && <p>Loading ...</p>}
+
+                            { !this.state.isLoading && incidents.map((incident, i) =>
+                                <IncidentItem incident={incident} key={i}
+                                onEdit={()=>{this.editIncident(incident)}}
+                                onDelete={()=>{this.deleteIncident(incident)}}/>
                             )}
+                            
                         </div>
                     </div>
                 </div>
