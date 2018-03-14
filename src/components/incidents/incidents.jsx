@@ -47,7 +47,9 @@ export default class Indicents extends React.Component {
             incidents: [],
             searchText: '',
             dialogOpen: false,
-            confirmationOpen: false
+            confirmationOpen: false,
+            sortBy:'',
+            sortOrder:''
         };
     }
 
@@ -127,6 +129,53 @@ export default class Indicents extends React.Component {
         });
     }
 
+    sortBy(field) {
+        var sortOrder = 'asc';
+
+        if(this.state.sortBy == field) {
+            sortOrder = this.state.sortOrder == 'asc' ? 'desc' : 'asc';
+        }
+
+        this.setState({
+            sortBy: field,
+            sortOrder: sortOrder
+        });
+        
+        var comparator = field == 'date' ? this.dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? this.subsidiaryComparator.bind(this,sortOrder) : this.defaultComparator.bind(this,sortOrder);
+
+        this.state.incidents.sort(comparator)
+    }
+
+    defaultComparator() {
+        return 1;
+    }
+
+    dateComparator(sortOrder,a,b) {
+        var orderMultiplier = sortOrder == 'asc' ? 1 : -1;
+
+        var datea = new Date(a.date);
+        var dateb = new Date(b.date);
+
+        if(datea < dateb){
+            return -1 * orderMultiplier;
+        }
+        if(datea > dateb){
+            return 1 * orderMultiplier;
+        }
+        return 0;
+    }
+
+    subsidiaryComparator(sortOrder,a,b) {
+        var orderMultiplier = sortOrder == 'asc' ? 1 : -1;
+        if(a.subsidiary.name < b.subsidiary.name){
+            return -1 * orderMultiplier
+        }
+        if(a.subsidiary.name > b.subsidiary.name){
+            return 1 * orderMultiplier
+        }
+        return 0;
+    }
+
     render () {
         let incidents = this.getFilteredIncidents();
 
@@ -148,21 +197,20 @@ export default class Indicents extends React.Component {
 
                             <div className="panel-container flex-row">
                                 <div className="head flex-row">
-                                    <div className="col date">Date</div>
-                                    <div className="col subsidiary">Subsidiary</div>
+                                    <div className="col date" onClick={this.sortBy.bind(this, 'date')}>Date</div>
+                                    <div className="col subsidiary" onClick={this.sortBy.bind(this, 'subsidiary')}>Subsidiary</div>
                                     <div className="col description">Incident</div>
                                 </div>
                             </div>
-
                             
-                            {this.state.isLoading && <p>Loading ...</p>}
+                            {this.state.isLoading && <p>Loading...</p>}
 
                             { !this.state.isLoading && incidents.map((incident, i) =>
                                 <IncidentItem incident={incident} key={i}
                                 onEdit={()=>{this.editIncident(incident)}}
                                 onDelete={()=>{this.deleteIncident(incident)}}/>
                             )}
-                            
+
                         </div>
                     </div>
                 </div>
