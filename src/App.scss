@@ -1,0 +1,28 @@
+@import "styles/vars.scss";
+@import "styles/fonts.scss";
+@import "styles/mixins.scss";
+@import "styles/flex.scss";
+
+@import "components/incidents/incidents.scss";
+@import "components/utils/date-picker/date-picker.scss";
+@import "components/utils/auto-complete/auto-complete.scss";
+
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    height: 100%;
+    font-family: Graphik;
+    position: relative;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "sw-test",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "jquery": "^3.2.1",
+    "js-sha1": "^0.5.0",
+    "lodash": "^4.17.4",
+    "material-ui": "^0.20.0",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-confirm": "^0.1.16",
+    "react-dom": "^15.5.4",
+    "react-router-dom": "^4.1.1",
+    "react-validation": "^2.10.9"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.1",
+    "react-scripts": "1.0.17",
+    "node-sass-chokidar": "0.0.2",
+    "npm-run-all": "^4.0.2"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar src/App.scss -o src/ --recursive",
+    "watch-css": "npm run build-css && node-sass-chokidar src/App.scss -o src/ --recursive --watch",
+    "start-js": "cross-env NODE_PATH=src react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && cross-env NODE_PATH=src react-scripts build",
+    "test": "cross-env NODE_PATH=src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
