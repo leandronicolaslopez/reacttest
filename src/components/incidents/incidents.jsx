@@ -110,6 +110,7 @@ export default class Indicents extends React.Component {
     sortBy(field) {
         let sortOrder = 'asc';
 
+        //if we are already sorting by this field, we invert the orders
         if(this.state.sortBy == field) {
             sortOrder = this.state.sortOrder == 'asc' ? 'desc' : 'asc';
         }
@@ -119,15 +120,14 @@ export default class Indicents extends React.Component {
             sortOrder: sortOrder
         });
 
-        var myMap = new Map();
-        myMap.set('date', dateComparator.bind(this,sortOrder));
-        myMap.set('subsidiary', subsidiaryComparator.bind(this,sortOrder));
+        var comparatorMap = new Map();
+        comparatorMap.set('date', dateComparator.bind(this,sortOrder));
+        comparatorMap.set('subsidiary', subsidiaryComparator.bind(this,sortOrder));
 
         let comparator = this.defaultComparator.bind(this,sortOrder);
-        if(myMap.has(field)) {
-            comparator = myMap.get(field);
+        if(comparatorMap.has(field)) {
+            comparator = comparatorMap.get(field);
         }
-        //let comparator = field == 'date' ? dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? subsidiaryComparator.bind(this,sortOrder) : ;
 
         this.state.incidents.sort(comparator)
     }
