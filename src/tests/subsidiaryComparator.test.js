@@ -55,8 +55,6 @@ it('order subsidiary desc', () => {
                 name: 'Subsidiary N° 1'
             },
             date: 1494943392147,
-            description: 'This is just a mock',
-            // uncomment the line below to see the bug
             description: 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789'
         }
     ];
@@ -73,8 +71,6 @@ it('order subsidiary desc', () => {
                 name: 'Subsidiary N° 1'
             },
             date: 1494943392147,
-            description: 'This is just a mock',
-            // uncomment the line below to see the bug
             description: 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789'
         },
         {

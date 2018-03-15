@@ -6,38 +6,14 @@ import { createConfirmation } from 'react-confirm';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import DateFormat from 'components/utils/date-format/date-format';
 
 import CreateIndicent from 'components/incidents/create-indicent/create-indicent';
+
+import IncidentItem from './incidentItem';
 
 import API from 'data/api';
 import dateComparator from '../../utils/comparators/dateComparator';
 import subsidiaryComparator from '../../utils/comparators/subsidiaryComparator';
-
-class IncidentItem extends React.Component {
-
-    render(){
-        return(
-        <div className="panel-container flex-row">
-            <div className="panel flex-row">
-                <div className="col date">
-                    <DateFormat date={this.props.incident.date} timezone="UTC" format="MMM DD, YY" />
-                </div>
-                <div className="col subsidiary">{ this.props.incident.subsidiary.name }</div>
-                <div className="col description">{ this.props.incident.description }</div>
-                <div className="col actions flex-row flex-end">
-                <div className="btn-icon" onClick={this.props.onEdit}>
-                    <img src="images/edit-icon.png" alt="edit icon" />
-                </div>
-                <div className="btn-icon" onClick={this.props.onDelete}>
-                    <img src="images/delete-icon.png" alt="delete icon" />
-                </div>
-            </div>
-            </div>
-        </div>
-        );
-    }
-}
 
 export default class Indicents extends React.Component {
     constructor (props) {
@@ -132,7 +108,7 @@ export default class Indicents extends React.Component {
     }
 
     sortBy(field) {
-        var sortOrder = 'asc';
+        let sortOrder = 'asc';
 
         if(this.state.sortBy == field) {
             sortOrder = this.state.sortOrder == 'asc' ? 'desc' : 'asc';
@@ -142,8 +118,16 @@ export default class Indicents extends React.Component {
             sortBy: field,
             sortOrder: sortOrder
         });
-        
-        var comparator = field == 'date' ? dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? subsidiaryComparator.bind(this,sortOrder) : this.defaultComparator.bind(this,sortOrder);
+
+        var myMap = new Map();
+        myMap.set('date', dateComparator.bind(this,sortOrder));
+        myMap.set('subsidiary', subsidiaryComparator.bind(this,sortOrder));
+
+        let comparator = this.defaultComparator.bind(this,sortOrder);
+        if(myMap.has(field)) {
+            comparator = myMap.get(field);
+        }
+        //let comparator = field == 'date' ? dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? subsidiaryComparator.bind(this,sortOrder) : ;
 
         this.state.incidents.sort(comparator)
     }
@@ -197,21 +181,6 @@ export default class Indicents extends React.Component {
                         contentStyle={{ width: '100%', maxWidth: '820px' }}>
                     <CreateIndicent onCreated={this.onIndicentCreated.bind(this)}
                                     incident={this.state.selected} />
-                </Dialog>
-
-                <Dialog title="Wait!"
-                        modal={true}
-                        open={this.state.confirmationOpen}
-                        actions={[
-                            <FlatButton label="No, I'm scared"
-                                        primary={true}
-                                        onClick={() => this.setState({ confirmationOpen: false })} />,
-                            <FlatButton label="Yes! let's do it"
-                                        primary={true}
-                                        keyboardFocused={true}
-                                        onClick={this.handleClose} />
-                        ]}>
-                    Are you sure you want to delete it?
                 </Dialog>
             </div>
         );
