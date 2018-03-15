@@ -11,6 +11,8 @@ import DateFormat from 'components/utils/date-format/date-format';
 import CreateIndicent from 'components/incidents/create-indicent/create-indicent';
 
 import API from 'data/api';
+import dateComparator from '../../utils/comparators/dateComparator';
+import subsidiaryComparator from '../../utils/comparators/subsidiaryComparator';
 
 class IncidentItem extends React.Component {
 
@@ -51,10 +53,6 @@ export default class Indicents extends React.Component {
             sortBy:'',
             sortOrder:''
         };
-    }
-
-    sum(a,b){
-        return a + b;
     }
 
     componentWillMount () {
@@ -145,39 +143,13 @@ export default class Indicents extends React.Component {
             sortOrder: sortOrder
         });
         
-        var comparator = field == 'date' ? this.dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? this.subsidiaryComparator.bind(this,sortOrder) : this.defaultComparator.bind(this,sortOrder);
+        var comparator = field == 'date' ? dateComparator.bind(this,sortOrder) : field == 'subsidiary' ? subsidiaryComparator.bind(this,sortOrder) : this.defaultComparator.bind(this,sortOrder);
 
         this.state.incidents.sort(comparator)
     }
 
     defaultComparator() {
         return 1;
-    }
-
-    dateComparator(sortOrder,a,b) {
-        var orderMultiplier = sortOrder == 'asc' ? 1 : -1;
-
-        var datea = new Date(a.date);
-        var dateb = new Date(b.date);
-
-        if(datea < dateb){
-            return -1 * orderMultiplier;
-        }
-        if(datea > dateb){
-            return 1 * orderMultiplier;
-        }
-        return 0;
-    }
-
-    subsidiaryComparator(sortOrder,a,b) {
-        var orderMultiplier = sortOrder == 'asc' ? 1 : -1;
-        if(a.subsidiary.name < b.subsidiary.name){
-            return -1 * orderMultiplier
-        }
-        if(a.subsidiary.name > b.subsidiary.name){
-            return 1 * orderMultiplier
-        }
-        return 0;
     }
 
     render () {
