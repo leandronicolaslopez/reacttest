@@ -53,6 +53,10 @@ export default class Indicents extends React.Component {
         };
     }
 
+    sum(a,b){
+        return a + b;
+    }
+
     componentWillMount () {
         this.getIncidents();
     }
